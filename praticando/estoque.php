@@ -15,6 +15,54 @@ class Main {
 		$objEstoque = new Estoque;
 		$objFabricante = new Fabricante;
 		$objMovimentacao = new Movimentacao;
+
+		// pega o segundo argumento passado pelo usuario via linha de comando
+		// o primeiro argumento é sempre o nome do arquivo
+		switch ($_SERVER['argv'][1]) { 
+			case 'gravaUsuario':
+				$this->gravaUsuario($objUsuario);
+				break;
+
+			case 'gravaUsuario':
+				$this->editaUsuario($objUsuario);
+				break;
+
+			default:
+				# code...
+				echo "\nERRO: Não existe a funcionalidade {$_SERVER['argv'][1]}\n";
+		}
+	}
+
+	public function gravaUsuario($objUsuario) {
+		$dados = $this->tratarDados();
+
+		$objUsuario->setDados($dados);
+
+		if ( $objUsuario->gravarDados() ) {
+			echo "\nParabéns, Usuário gravado com sucesso\n";
+		}
+	}
+
+	public function editaUsuario($objUsuario) {
+		$dados = $this->tratarDados();
+
+		$objUsuario->setDados($dados);
+
+		if ( $objUsuario->gravarDados() ) {
+			echo "\nParabéns, Usuário editado com sucesso\n";
+		}
+	}
+
+	public function tratarDados() {
+		$args = explode(',', $_SERVER['argv'][2]);
+
+		foreach ($args as $valor) {
+			$arg = explode('=', $valor);
+
+			$dados[$arg[0]] = $arg[1];
+		}
+
+		return $dados;
 	}
 
 	// ao terminar a execução
